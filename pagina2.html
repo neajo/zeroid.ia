@@ -4,42 +4,308 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZeroID.IA - Segurança e Recursos</title>
-    <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=Poppins:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        /* Reset e variáveis CSS */
+        :root {
+            --black: #000000;
+            --white: #ffffff;
+            --gray-100: #f5f5f5;
+            --gray-200: #e0e0e0;
+            --gray-300: #c0c0c0;
+            --gray-400: #9e9e9e;
+            --gray-500: #757575;
+            --gray-600: #616161;
+            --gray-700: #424242;
+            --gray-800: #212121;
+            --gray-900: #111111;
+            --neon-glow: 0 0 10px rgba(255, 255, 255, 0.8),
+                         0 0 20px rgba(255, 255, 255, 0.6),
+                         0 0 30px rgba(255, 255, 255, 0.4);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: var(--black);
+            color: var(--white);
+            font-family: 'Inter', 'Poppins', sans-serif;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        
+        /* Fontes */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+        }
+        
+        /* Animações */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes glowPulse {
+            0%, 100% { box-shadow: var(--neon-glow); }
+            50% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.6); }
+        }
+        
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        
+        @keyframes blink {
+            0%, 100% { border-color: transparent; }
+            50% { border-color: var(--white); }
+        }
+        
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        
+        /* Layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Fases */
+        .phase {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .phase.active {
+            display: flex;
+            animation: fadeIn 1s ease;
+        }
+        
+        /* Fase 1: Digitação */
+        .typing-phase {
+            font-size: 2.5rem;
+            font-family: 'Space Grotesk', sans-serif;
+            line-height: 1.4;
+        }
+        
+        .typing-line {
+            height: 70px;
+            margin-bottom: 10px;
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 3px solid var(--white);
+            animation: blink 0.75s step-end infinite;
+            opacity: 0;
+        }
+        
+        /* Fase 2: Animação e botões */
+        .animation-container {
+            width: 100%;
+            height: 400px;
+            margin-bottom: 60px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .dna-animation {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+        
+        .dna-strand {
+            position: absolute;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, var(--white), transparent);
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .dna-node {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: var(--white);
+            border-radius: 50%;
+            animation: float 4s ease-in-out infinite;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        }
+        
+        .dna-connection {
+            position: absolute;
+            width: 2px;
+            background: var(--white);
+            opacity: 0.3;
+        }
+        
+        /* Botões */
+        .buttons-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            align-items: center;
+            animation: slideInUp 1s ease 0.5s both;
+        }
+        
+        .btn {
+            padding: 20px 50px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            outline: none;
+            border-radius: 8px;
+            min-width: 300px;
+        }
+        
+        .btn-epic {
+            background: var(--white);
+            color: var(--black);
+            border: 2px solid var(--white);
+            animation: glowPulse 3s infinite;
+        }
+        
+        .btn-epic:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: var(--white);
+            border: 2px solid var(--white);
+        }
+        
+        .btn-outline:hover {
+            background: var(--white);
+            color: var(--black);
+            transform: translateY(-3px);
+        }
+        
+        /* Efeito ripple */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.7);
+            transform: scale(0);
+            animation: ripple 0.6s linear;
+        }
+        
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .typing-phase {
+                font-size: 1.8rem;
+            }
+            
+            .typing-line {
+                height: 50px;
+            }
+            
+            .animation-container {
+                height: 300px;
+            }
+            
+            .btn {
+                padding: 18px 40px;
+                font-size: 1.1rem;
+                min-width: 250px;
+            }
+            
+            .btn-epic {
+                min-width: 280px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .typing-phase {
+                font-size: 1.5rem;
+            }
+            
+            .typing-line {
+                height: 40px;
+                font-size: 1.3rem;
+            }
+            
+            .animation-container {
+                height: 250px;
+            }
+            
+            .btn {
+                padding: 16px 30px;
+                font-size: 1rem;
+                min-width: 200px;
+            }
+        }
+    </style>
 </head>
 <body class="pagina2">
     <div class="container">
-        <main class="main-content">
-            <!-- Fase 1: Textos com efeito de digitação -->
-            <div id="phase1" class="phase active">
-                <div class="typing-phase">
-                    <div class="typing-line" id="line1"></div>
-                    <div class="typing-line" id="line2"></div>
-                    <div class="typing-line" id="line3"></div>
-                    <div class="typing-line" id="line4"></div>
-                    <div class="typing-line" id="line5"></div>
+        <!-- Fase 1: Textos com efeito de digitação -->
+        <div id="phase1" class="phase active">
+            <div class="typing-phase">
+                <div class="typing-line" id="line1"></div>
+                <div class="typing-line" id="line2"></div>
+                <div class="typing-line" id="line3"></div>
+                <div class="typing-line" id="line4"></div>
+                <div class="typing-line" id="line5"></div>
+            </div>
+        </div>
+        
+        <!-- Fase 2: Animação DNA e botões -->
+        <div id="phase2" class="phase">
+            <div class="animation-container">
+                <div class="dna-animation" id="dna-animation">
+                    <!-- DNA será gerado via JavaScript -->
                 </div>
             </div>
             
-            <!-- Fase 2: Animação 3D e botões -->
-            <div id="phase2" class="phase">
-                <div class="animation-container">
-                    <canvas id="dna-animation"></canvas>
-                </div>
-                
-                <div class="buttons-container">
-                    <button onclick="navigateTo('chat.html')" class="btn btn-filled btn-epic">
-                        ENTRAR NO CHAT
-                    </button>
-                    <button onclick="navigateTo('pagvibe1.html')" class="btn btn-outline">
-                        ENTRAR NO BETA VIBEZZ
-                    </button>
-                </div>
+            <div class="buttons-container">
+                <button onclick="navigateTo('chat.html')" class="btn btn-epic">
+                    ENTRAR NO CHAT
+                </button>
+                <button onclick="navigateTo('pagvibe1.html')" class="btn btn-outline">
+                    ENTRAR NO BETA VIBEZZ
+                </button>
             </div>
-        </main>
+        </div>
     </div>
 
-    <script src="js/main.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Verificar autenticação
@@ -48,6 +314,15 @@
                 return;
             }
             
+            // Iniciar animação de digitação
+            startTypingAnimation();
+            
+            // Adicionar efeito ripple aos botões
+            initRippleEffect();
+        });
+        
+        // Animação de digitação
+        function startTypingAnimation() {
             const texts = [
                 "Segurança de Ponta",
                 "Criptografia end-to-end em todas as conversas",
@@ -60,7 +335,6 @@
             let currentText = 0;
             let currentChar = 0;
             let isDeleting = false;
-            let isWaiting = false;
             
             function typeText() {
                 const lineElement = document.getElementById(`line${currentLine}`);
@@ -69,7 +343,7 @@
                 if (!lineElement) return;
                 
                 if (isDeleting) {
-                    // Deletando
+                    // Deletando texto
                     lineElement.textContent = currentTextString.substring(0, currentChar - 1);
                     currentChar--;
                     
@@ -78,10 +352,13 @@
                         currentText = (currentText + 1) % texts.length;
                         setTimeout(typeText, 500);
                     } else {
-                        setTimeout(typeText, 50);
+                        setTimeout(typeText, 30); // Mais rápido ao deletar
                     }
                 } else {
-                    // Digitando
+                    // Mostrar linha
+                    lineElement.style.opacity = '1';
+                    
+                    // Digitando texto
                     lineElement.textContent = currentTextString.substring(0, currentChar + 1);
                     currentChar++;
                     
@@ -95,189 +372,156 @@
                                 document.getElementById('phase2').classList.add('active');
                                 
                                 // Iniciar animação DNA
-                                initDNAAnimation();
-                            }, 3000);
+                                createDNAAnimation();
+                            }, 2000);
                             return;
                         }
                         
                         // Próxima linha
-                        isWaiting = true;
                         setTimeout(() => {
-                            isWaiting = false;
                             currentLine++;
                             currentText = (currentText + 1) % texts.length;
                             currentChar = 0;
                             setTimeout(typeText, 500);
-                        }, 2000);
+                        }, 1500);
                     } else {
-                        setTimeout(typeText, 100);
+                        setTimeout(typeText, 80); // Velocidade de digitação
                     }
                 }
             }
             
-            // Iniciar digitação
+            // Iniciar digitação após 1 segundo
             setTimeout(typeText, 1000);
-        });
+        }
         
-        // Animação DNA (simplificada)
-        function initDNAAnimation() {
-            const canvas = document.getElementById('dna-animation');
-            const ctx = canvas.getContext('2d');
+        // Criar animação DNA
+        function createDNAAnimation() {
+            const container = document.getElementById('dna-animation');
+            if (!container) return;
             
-            // Configurar canvas
-            canvas.width = canvas.offsetWidth;
-            canvas.height = canvas.offsetHeight;
+            container.innerHTML = '';
             
-            const centerX = canvas.width / 2;
-            const centerY = canvas.height / 2;
-            const radius = 150;
-            const nodes = 12;
-            let angle = 0;
+            // Criar nós e conexões do DNA
+            const nodeCount = 12;
+            const radius = 120;
+            const centerX = container.offsetWidth / 2;
+            const centerY = container.offsetHeight / 2;
             
-            function drawDNA() {
-                // Limpar canvas
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // Criar nós do DNA
+            for (let i = 0; i < nodeCount; i++) {
+                const angle = (i / nodeCount) * Math.PI * 2;
+                const x1 = centerX + Math.cos(angle) * radius;
+                const y1 = centerY + i * 30;
                 
-                // Desenhar DNA
-                ctx.strokeStyle = 'rgba(255, 255, 255, 0.7)';
-                ctx.lineWidth = 2;
+                const x2 = centerX + Math.cos(angle + Math.PI) * radius;
+                const y2 = centerY + i * 30;
                 
-                for (let i = 0; i < nodes; i++) {
-                    const y = (i / (nodes - 1)) * (canvas.height - 200) + 100;
+                // Nó da primeira hélice
+                const node1 = document.createElement('div');
+                node1.className = 'dna-node';
+                node1.style.left = `${x1}px`;
+                node1.style.top = `${y1}px`;
+                node1.style.animationDelay = `${i * 0.2}s`;
+                container.appendChild(node1);
+                
+                // Nó da segunda hélice
+                const node2 = document.createElement('div');
+                node2.className = 'dna-node';
+                node2.style.left = `${x2}px`;
+                node2.style.top = `${y2}px`;
+                node2.style.animationDelay = `${i * 0.2 + 0.1}s`;
+                container.appendChild(node2);
+                
+                // Conexão vertical (entre nós da mesma hélice)
+                if (i < nodeCount - 1) {
+                    const nextY1 = centerY + (i + 1) * 30;
+                    const connection1 = document.createElement('div');
+                    connection1.className = 'dna-connection';
+                    connection1.style.left = `${x1}px`;
+                    connection1.style.top = `${y1}px`;
+                    connection1.style.height = `${30}px`;
+                    connection1.style.transform = `rotate(${90}deg)`;
+                    container.appendChild(connection1);
                     
-                    // Primeira hélice
-                    const x1 = centerX + Math.sin(angle + i * 0.5) * radius;
-                    
-                    // Segunda hélice
-                    const x2 = centerX + Math.sin(angle + i * 0.5 + Math.PI) * radius;
-                    
-                    // Desenhar nós
-                    ctx.beginPath();
-                    ctx.arc(x1, y, 8, 0, Math.PI * 2);
-                    ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
-                    ctx.fill();
-                    
-                    ctx.beginPath();
-                    ctx.arc(x2, y, 8, 0, Math.PI * 2);
-                    ctx.fill();
-                    
-                    // Conectar nós na mesma hélice
-                    if (i > 0) {
-                        const prevY = ((i - 1) / (nodes - 1)) * (canvas.height - 200) + 100;
-                        const prevX1 = centerX + Math.sin(angle + (i - 1) * 0.5) * radius;
-                        const prevX2 = centerX + Math.sin(angle + (i - 1) * 0.5 + Math.PI) * radius;
-                        
-                        ctx.beginPath();
-                        ctx.moveTo(prevX1, prevY);
-                        ctx.lineTo(x1, y);
-                        ctx.stroke();
-                        
-                        ctx.beginPath();
-                        ctx.moveTo(prevX2, prevY);
-                        ctx.lineTo(x2, y);
-                        ctx.stroke();
-                    }
-                    
-                    // Conectar nós entre hélices
-                    ctx.beginPath();
-                    ctx.moveTo(x1, y);
-                    ctx.lineTo(x2, y);
-                    ctx.stroke();
+                    const nextY2 = centerY + (i + 1) * 30;
+                    const connection2 = document.createElement('div');
+                    connection2.className = 'dna-connection';
+                    connection2.style.left = `${x2}px`;
+                    connection2.style.top = `${y2}px`;
+                    connection2.style.height = `${30}px`;
+                    connection2.style.transform = `rotate(${90}deg)`;
+                    container.appendChild(connection2);
                 }
                 
-                // Atualizar ângulo para animação
-                angle += 0.05;
+                // Conexão horizontal (entre hélices)
+                const hConnection = document.createElement('div');
+                hConnection.className = 'dna-connection';
+                const dx = x2 - x1;
+                const dy = y2 - y1;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                const angleDeg = Math.atan2(dy, dx) * 180 / Math.PI;
                 
-                // Continuar animação
-                requestAnimationFrame(drawDNA);
+                hConnection.style.left = `${x1}px`;
+                hConnection.style.top = `${y1}px`;
+                hConnection.style.width = `${distance}px`;
+                hConnection.style.transform = `rotate(${angleDeg}deg)`;
+                container.appendChild(hConnection);
             }
             
-            // Iniciar animação
-            drawDNA();
+            // Estrutura central
+            const centralStrand = document.createElement('div');
+            centralStrand.className = 'dna-strand';
+            centralStrand.style.left = `${centerX}px`;
+            container.appendChild(centralStrand);
             
-            // Redimensionar canvas quando a janela mudar de tamanho
-            window.addEventListener('resize', function() {
-                canvas.width = canvas.offsetWidth;
-                canvas.height = canvas.offsetHeight;
+            // Animar rotação do DNA
+            let rotation = 0;
+            function animateDNA() {
+                rotation += 0.5;
+                container.style.transform = `rotate(${rotation}deg)`;
+                requestAnimationFrame(animateDNA);
+            }
+            
+            animateDNA();
+        }
+        
+        // Efeito ripple nos botões
+        function initRippleEffect() {
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const ripple = document.createElement('span');
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+                    
+                    ripple.style.width = ripple.style.height = size + 'px';
+                    ripple.style.left = x + 'px';
+                    ripple.style.top = y + 'px';
+                    ripple.classList.add('ripple');
+                    
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
             });
         }
+        
+        // Funções globais
+        function checkAuth() {
+            return localStorage.getItem('zeroid_token') !== null;
+        }
+        
+        function navigateTo(page) {
+            window.location.href = page;
+        }
+        
+        // Exportar para uso global
+        window.checkAuth = checkAuth;
+        window.navigateTo = navigateTo;
     </script>
-    
-    <style>
-        .pagina2 {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .phase {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            width: 100%;
-        }
-        
-        .phase.active {
-            display: flex;
-            animation: fadeIn 1s ease;
-        }
-        
-        .typing-phase {
-            font-size: 2.5rem;
-            text-align: center;
-            font-family: 'Space Grotesk', sans-serif;
-        }
-        
-        .typing-line {
-            height: 70px;
-            margin-bottom: 10px;
-            overflow: hidden;
-            white-space: nowrap;
-            border-right: 3px solid var(--white);
-            animation: blink 0.75s step-end infinite;
-        }
-        
-        .animation-container {
-            width: 100%;
-            height: 400px;
-            margin-bottom: 60px;
-        }
-        
-        #dna-animation {
-            width: 100%;
-            height: 100%;
-        }
-        
-        .buttons-container {
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-            align-items: center;
-        }
-        
-        .btn-epic {
-            padding: 25px 60px;
-            font-size: 1.8rem;
-            animation: glowPulse 2s infinite;
-        }
-        
-        @media (max-width: 768px) {
-            .typing-phase {
-                font-size: 1.8rem;
-            }
-            
-            .typing-line {
-                height: 50px;
-            }
-            
-            .btn-epic {
-                padding: 20px 40px;
-                font-size: 1.4rem;
-            }
-        }
-    </style>
 </body>
 </html>
