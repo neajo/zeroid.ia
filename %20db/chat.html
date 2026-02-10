@@ -6,17 +6,114 @@
     <title>ZeroID.IA - Chat Neural</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="chat-page">
+    <div class="chat-container">
+        <!-- Sidebar -->
+        <div class="chat-sidebar">
+            <div class="sidebar-header">
+                <div class="logo">ZeroID.IA</div>
+                <button id="new-chat-btn" class="btn-new-chat">
+                    <i class="fas fa-plus"></i> Nova Conversa
+                </button>
+            </div>
+            
+            <div class="conversations-list" id="conversations-list">
+                <!-- Conversas serão carregadas aqui -->
+            </div>
+            
+            <div class="sidebar-footer">
+                <button id="settings-btn" class="btn-settings">
+                    <i class="fas fa-cog"></i> Configurações
+                </button>
+            </div>
+        </div>
+        
+        <!-- Área principal -->
+        <div class="chat-main">
+            <div class="chat-header">
+                <h2 id="current-conversation-title">Nova Conversa</h2>
+                <button onclick="navigateTo('pagvibe1.html')" class="btn-vibezz">
+                    <i class="fas fa-share-nodes"></i> Vibezz
+                </button>
+            </div>
+            
+            <div class="messages-container" id="messages-container">
+                <!-- Mensagens serão exibidas aqui -->
+                <div class="welcome-message">
+                    <p>Bem-vindo ao Chat Neural da ZeroID.IA. Comece uma nova conversa ou selecione uma conversa anterior.</p>
+                </div>
+            </div>
+            
+            <div class="input-container">
+                <div class="input-wrapper">
+                    <textarea id="message-input" 
+                              placeholder="Digite sua mensagem aqui... (Suporte a Markdown)"
+                              rows="3"></textarea>
+                </div>
+                <div class="input-footer">
+                    <div class="char-counter">
+                        <span id="char-count">0</span>/5000
+                    </div>
+                    <button id="send-btn" class="btn-send">
+                        <i class="fas fa-paper-plane"></i> Enviar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal de configurações -->
+    <div id="settings-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Configurações do Chat</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            
+            <div class="settings-options">
+                <div class="settings-option">
+                    <label for="ai-model">Modelo de IA:</label>
+                    <select id="ai-model">
+                        <option value="gpt">GPT-4 (Padrão)</option>
+                        <option value="claude">Claude 3</option>
+                        <option value="gemini">Gemini Pro</option>
+                    </select>
+                </div>
+                
+                <div class="settings-option">
+                    <label for="thinking-process">Mostrar processo de pensamento:</label>
+                    <select id="thinking-process">
+                        <option value="yes">Sim</option>
+                        <option value="no">Não</option>
+                    </select>
+                </div>
+                
+                <div class="settings-option">
+                    <button id="export-btn" class="btn btn-outline">
+                        Exportar todas as conversas (JSON)
+                    </button>
+                </div>
+                
+                <div class="settings-buttons">
+                    <button id="close-settings" class="btn btn-outline">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="db/database.js"></script>
+    <script src="js/chat.js"></script>
+    
     <style>
-        /* Estilos específicos para chat.html */
         .chat-container {
             display: flex;
-            height: calc(100vh - 80px);
-            margin-top: 20px;
+            height: 100vh;
         }
         
-        /* Sidebar esquerda */
         .chat-sidebar {
-            width: 20%;
+            width: 300px;
             background: var(--gray-900);
             border-right: 1px solid var(--gray-700);
             display: flex;
@@ -31,27 +128,26 @@
         .sidebar-header .logo {
             font-size: 1.5rem;
             margin-bottom: 20px;
-            text-align: center;
         }
         
         .btn-new-chat {
             width: 100%;
             padding: 12px;
-            margin-bottom: 30px;
             background: var(--gray-800);
             color: var(--white);
             border: 1px solid var(--gray-600);
+            border-radius: 6px;
             cursor: pointer;
-            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
+            transition: all 0.3s ease;
         }
         
         .btn-new-chat:hover {
-            background: var(--gray-700);
             border-color: var(--white);
+            background: var(--gray-700);
         }
         
         .conversations-list {
@@ -63,7 +159,7 @@
             padding: 15px;
             margin-bottom: 10px;
             border: 1px solid transparent;
-            border-radius: 5px;
+            border-radius: 6px;
             cursor: pointer;
             transition: all 0.3s ease;
         }
@@ -86,16 +182,16 @@
         }
         
         .conversation-preview {
-            font-size: 0.9rem;
             color: var(--gray-400);
+            font-size: 0.9rem;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
         
         .conversation-time {
-            font-size: 0.8rem;
             color: var(--gray-500);
+            font-size: 0.8rem;
             margin-top: 5px;
         }
         
@@ -110,21 +206,21 @@
             background: transparent;
             color: var(--white);
             border: 1px solid var(--gray-600);
+            border-radius: 6px;
             cursor: pointer;
-            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
+            transition: all 0.3s ease;
         }
         
         .btn-settings:hover {
             border-color: var(--white);
         }
         
-        /* Área principal */
         .chat-main {
-            width: 80%;
+            flex: 1;
             display: flex;
             flex-direction: column;
             padding: 0 20px;
@@ -147,11 +243,12 @@
             background: transparent;
             color: var(--white);
             border: 1px solid var(--gray-600);
+            border-radius: 6px;
             cursor: pointer;
-            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             gap: 10px;
+            transition: all 0.3s ease;
         }
         
         .btn-vibezz:hover {
@@ -175,21 +272,25 @@
         }
         
         @keyframes slideUp {
-            from { transform: translateY(10px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         .message.user {
             align-self: flex-end;
             background: var(--gray-800);
-            border-bottom-right-radius: 2px;
         }
         
         .message.ai {
             align-self: flex-start;
             background: transparent;
             border: 1px solid var(--gray-700);
-            border-bottom-left-radius: 2px;
         }
         
         .message-header {
@@ -261,8 +362,12 @@
         }
         
         @keyframes pulse {
-            0%, 100% { opacity: 0.4; }
-            50% { opacity: 1; }
+            0%, 100% {
+                opacity: 0.4;
+            }
+            50% {
+                opacity: 1;
+            }
         }
         
         .input-container {
@@ -273,7 +378,6 @@
         .input-wrapper {
             display: flex;
             gap: 10px;
-            align-items: flex-end;
         }
         
         #message-input {
@@ -283,12 +387,13 @@
             padding: 15px;
             background: var(--gray-900);
             border: 1px solid var(--gray-700);
+            border-radius: 8px;
             color: var(--white);
             font-family: inherit;
             font-size: 1rem;
             resize: none;
             outline: none;
-            transition: border-color 0.3s ease;
+            transition: all 0.3s ease;
         }
         
         #message-input:focus {
@@ -298,197 +403,84 @@
         .input-footer {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             margin-top: 10px;
         }
         
         .char-counter {
-            font-size: 0.9rem;
             color: var(--gray-400);
+            font-size: 0.9rem;
         }
         
         .btn-send {
-            padding: 15px 30px;
+            padding: 12px 30px;
             background: var(--white);
             color: var(--black);
             border: none;
+            border-radius: 6px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            font-weight: 600;
             display: flex;
             align-items: center;
             gap: 10px;
-            font-weight: 600;
+            transition: all 0.3s ease;
         }
         
         .btn-send:hover {
             background: var(--gray-200);
         }
         
+        .welcome-message {
+            text-align: center;
+            color: var(--gray-400);
+            font-style: italic;
+            padding: 40px;
+        }
+        
         /* Modal de configurações */
-        .settings-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .settings-content {
-            background: var(--gray-900);
-            padding: 30px;
-            border-radius: 10px;
-            width: 500px;
-            max-width: 90%;
-            border: 1px solid var(--gray-700);
-        }
-        
-        .settings-title {
-            margin-bottom: 20px;
+        .settings-options {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
         
         .settings-option {
-            margin-bottom: 20px;
-        }
-        
-        .settings-option label {
-            display: block;
-            margin-bottom: 5px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
         
         .settings-option select {
-            width: 100%;
             padding: 10px;
             background: var(--gray-800);
             color: var(--white);
-            border: 1px solid var(--gray-600);
+            border: 1px solid var(--gray-700);
+            border-radius: 6px;
             outline: none;
         }
         
         .settings-buttons {
             display: flex;
-            gap: 10px;
             justify-content: flex-end;
-            margin-top: 30px;
-        }
-        
-        @media (max-width: 1024px) {
-            .chat-sidebar {
-                width: 30%;
-            }
-            .chat-main {
-                width: 70%;
-            }
+            margin-top: 20px;
         }
         
         @media (max-width: 768px) {
             .chat-container {
                 flex-direction: column;
-                height: auto;
             }
+            
             .chat-sidebar {
                 width: 100%;
                 height: 300px;
                 border-right: none;
                 border-bottom: 1px solid var(--gray-700);
             }
+            
             .chat-main {
-                width: 100%;
-                height: calc(100vh - 400px);
+                height: calc(100vh - 300px);
             }
         }
     </style>
-</head>
-<body>
-    <div class="container">
-        <div class="chat-container">
-            <!-- Sidebar esquerda -->
-            <div class="chat-sidebar">
-                <div class="sidebar-header">
-                    <div class="logo">ZeroID.IA</div>
-                    <button id="new-chat-btn" class="btn-new-chat">
-                        <i class="fas fa-plus"></i> Nova Conversa
-                    </button>
-                </div>
-                
-                <div class="conversations-list" id="conversations-list">
-                    <!-- As conversas serão carregadas aqui via JavaScript -->
-                </div>
-                
-                <div class="sidebar-footer">
-                    <button id="settings-btn" class="btn-settings">
-                        <i class="fas fa-cog"></i> Configurações
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Área principal -->
-            <div class="chat-main">
-                <div class="chat-header">
-                    <h2 id="current-conversation-title" class="chat-title">Nova Conversa</h2>
-                    <button id="vibezz-btn" class="btn-vibezz">
-                        <i class="fas fa-share-nodes"></i> Vibezz
-                    </button>
-                </div>
-                
-                <div class="messages-container" id="messages-container">
-                    <!-- As mensagens serão exibidas aqui -->
-                    <div class="welcome-message">
-                        <p>Bem-vindo ao Chat Neural da ZeroID.IA. Comece uma nova conversa ou selecione uma conversa anterior.</p>
-                    </div>
-                </div>
-                
-                <div class="input-container">
-                    <div class="input-wrapper">
-                        <textarea id="message-input" placeholder="Digite sua mensagem aqui... (Suporte a Markdown)"></textarea>
-                    </div>
-                    <div class="input-footer">
-                        <div class="char-counter">
-                            <span id="char-count">0</span>/5000
-                        </div>
-                        <button id="send-btn" class="btn-send">
-                            <i class="fas fa-paper-plane"></i> Enviar
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Modal de configurações -->
-    <div id="settings-modal" class="settings-modal">
-        <div class="settings-content">
-            <h3 class="settings-title">Configurações do Chat</h3>
-            <div class="settings-option">
-                <label for="ai-model">Modelo de IA:</label>
-                <select id="ai-model">
-                    <option value="gpt">GPT-4 (Padrão)</option>
-                    <option value="claude">Claude 3</option>
-                    <option value="gemini">Gemini Pro</option>
-                </select>
-            </div>
-            <div class="settings-option">
-                <label for="thinking-process">Mostrar processo de pensamento:</label>
-                <select id="thinking-process">
-                    <option value="yes">Sim</option>
-                    <option value="no">Não</option>
-                </select>
-            </div>
-            <div class="settings-option">
-                <label for="export-data">Exportar conversas:</label>
-                <button id="export-btn" class="btn btn-outline" style="width: 100%;">Exportar todas as conversas (JSON)</button>
-            </div>
-            <div class="settings-buttons">
-                <button id="close-settings" class="btn btn-outline">Fechar</button>
-            </div>
-        </div>
-    </div>
-
-    <script src="js/main.js"></script>
-    <script src="db/database.js"></script>
-    <script src="js/chat.js"></script>
 </body>
 </html>
