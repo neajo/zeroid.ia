@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZeroID.IA - Segurança e Recursos</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Estilos específicos para pagina2 */
+        .phase {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            transition: opacity 1.5s ease;
+        }
+        
+        #phase1 {
+            opacity: 1;
+        }
+        
+        #phase2 {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .typing-phase {
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 20px;
+            min-height: 100px;
+        }
+        
+        .typing-line {
+            overflow: hidden;
+            border-right: 3px solid var(--white);
+            white-space: nowrap;
+            margin: 0 auto;
+            animation: typing 3s steps(40, end) forwards, blink 0.75s step-end infinite;
+        }
+        
+        #animation-container {
+            width: 100%;
+            height: 400px;
+            position: relative;
+            margin: 40px 0;
+        }
+        
+        #dna-animation {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .buttons-phase2 {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s ease 0.5s;
+        }
+        
+        .buttons-phase2.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .btn-epic {
+            padding: 25px 60px;
+            font-size: 1.8rem;
+            border-width: 3px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .btn-epic::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.7s ease;
+            z-index: -1;
+        }
+        
+        .btn-epic:hover::before {
+            left: 100%;
+        }
+        
+        .btn-secondary {
+            padding: 15px 40px;
+            font-size: 1.2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .typing-phase {
+                font-size: 2rem;
+            }
+            .btn-epic {
+                padding: 20px 40px;
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body class="pagina2">
+    <div class="container">
+        <header class="header">
+            <h1 class="logo">ZeroID.IA</h1>
+        </header>
+        <main class="main-content">
+            <div id="phase1" class="phase">
+                <div class="typing-phase" id="typing-phase">
+                    <!-- Textos serão inseridos via JavaScript -->
+                </div>
+            </div>
+            <div id="phase2" class="phase">
+                <div id="animation-container">
+                    <canvas id="dna-animation"></canvas>
+                </div>
+                <div class="buttons-phase2" id="buttons-phase2">
+                    <button id="btn-chat" class="btn btn-filled btn-epic">ENTRAR NO CHAT</button>
+                    <button id="btn-vibezz" class="btn btn-outline btn-secondary">ENTRAR NO BETA VIBEZZ</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Verificar se usuário está logado
+            const user = JSON.parse(sessionStorage.getItem('zeroid_user'));
+            if (!user) {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            const phase1 = document.getElementById('phase1');
+            const phase2 = document.getElementById('phase2');
+            const typingPhase = document.getElementById('typing-phase');
+            const buttonsPhase2 = document.getElementById('buttons-phase2');
+            
+            const texts = [
+                "Segurança de Ponta",
+                "Criptografia end-to-end em todas as conversas",
+                "Seus dados pertencem a você",
+                "Em breve: Vibezz - A Rede Social Neural",
+                "Conecte-se, compartilhe, evolua"
+            ];
+            
+            let textIndex = 0;
+            let charIndex = 0;
+            let isDeleting = false;
+            let isWaiting = false;
+            
+            function typeText() {
+                const currentText = texts[textIndex];
+                
+                if (isDeleting) {
+                    typingPhase.innerHTML = `<div class="typing-line">${currentText.substring(0, charIndex--)}</div>`;
+                    if (charIndex < 0) {
+                        isDeleting = false;
+                        textIndex = (textIndex + 1) % texts.length;
+                        setTimeout(typeText, 500);
+                    } else {
+                        setTimeout(typeText, 50);
+                    }
+                } else {
+                    typingPhase.innerHTML = `<div class="typing-line">${currentText.substring(0, charIndex++)}</div>`;
+                    if (charIndex > currentText.length) {
+                        if (textIndex === texts.length - 1) {
+                            // Último texto, esperar e ir para fase 2
+                            setTimeout(() => {
+                                phase1.style.opacity = '0';
+                                phase1.style.pointerEvents = 'none';
+                                phase2.style.opacity = '1';
+                                phase2.style.pointerEvents = 'all';
+                                
+                                // Iniciar animação DNA
+                                initDNAAnimation();
+                                
+                                // Mostrar botões
+                                setTimeout(() => {
+                                    buttonsPhase2.classList.add('show');
+                                }, 1000);
+                            }, 3000);
+                            return;
+                        }
+                        isWaiting = true;
+                        setTimeout(() => {
+                            isWaiting = false;
+                            isDeleting = true;
+                            setTimeout(typeText, 500);
+                        }, 2000);
+                    } else {
+                        setTimeout(typeText, 100);
+                    }
+                }
+            }
+            
+            // Iniciar digitação após 1 segundo
+            setTimeout(typeText, 1000);
+            
+            // Animação DNA (simplificada com Canvas)
+            function initDNAAnimation() {
+                const canvas = document.getElementById('dna-animation');
+                const ctx = canvas.getContext('2d');
+                
+                canvas.width = canvas.offsetWidth;
+                canvas.height = canvas.offsetHeight;
+                
+                const width = canvas.width;
+                const height = canvas.height;
+                
+                const nodes = 15;
+                const radius = 8;
+                const amplitude = 80;
+                const speed = 0.03;
+                let angle = 0;
+                
+                function draw() {
+                    ctx.clearRect(0, 0, width, height);
+                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.7)';
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+                    ctx.lineWidth = 2;
+                    
+                    // Desenhar duas hélices
+                    for (let h = 0; h < 2; h++) {
+                        const offsetX = h === 0 ? -40 : 40;
+                        const phase = h === 0 ? 0 : Math.PI;
+                        
+                        // Desenhar nós e conexões
+                        for (let i = 0; i < nodes; i++) {
+                            const y = (i / (nodes - 1)) * (height - 100) + 50;
+                            const x = width / 2 + offsetX + Math.sin(angle + i * 0.5 + phase) * amplitude;
+                            
+                            // Desenhar conexões entre nós
+                            if (i > 0) {
+                                const prevY = ((i - 1) / (nodes - 1)) * (height - 100) + 50;
+                                const prevX = width / 2 + offsetX + Math.sin(angle + (i - 1) * 0.5 + phase) * amplitude;
+                                
+                                ctx.beginPath();
+                                ctx.moveTo(prevX, prevY);
+                                ctx.lineTo(x, y);
+                                ctx.stroke();
+                            }
+                            
+                            // Desenhar conexões entre hélices
+                            if (h === 0 && i < nodes) {
+                                const otherX = width / 2 + (offsetX * -1) + Math.sin(angle + i * 0.5 + phase + Math.PI) * amplitude;
+                                ctx.beginPath();
+                                ctx.moveTo(x, y);
+                                ctx.lineTo(otherX, y);
+                                ctx.stroke();
+                            }
+                            
+                            // Desenhar nó
+                            ctx.beginPath();
+                            ctx.arc(x, y, radius, 0, Math.PI * 2);
+                            ctx.fill();
+                        }
+                    }
+                    
+                    angle += speed;
+                    requestAnimationFrame(draw);
+                }
+                
+                draw();
+                
+                // Redimensionar canvas quando a janela mudar de tamanho
+                window.addEventListener('resize', function() {
+                    canvas.width = canvas.offsetWidth;
+                    canvas.height = canvas.offsetHeight;
+                });
+            }
+            
+            // Botões
+            document.getElementById('btn-chat').addEventListener('click', function() {
+                window.location.href = 'chat.html';
+            });
+            
+            document.getElementById('btn-vibezz').addEventListener('click', function() {
+                window.location.href = 'pagvibe1.html';
+            });
+        });
+    </script>
+</body>
+</html>
