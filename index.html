@@ -11,54 +11,83 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="index-page">
-    <div id="particles-js"></div>
+    <!-- Partículas de fundo -->
+    <div id="particles-js" class="particles-container"></div>
+    
+    <!-- Conteúdo principal -->
     <div class="container">
         <header class="header">
-            <h1 class="logo" id="logo">ZeroID.IA</h1>
-        </header>
-        <main class="main-content">
-            <div class="typing-container">
-                <h2 class="typing-text" id="typing-text"></h2>
+            <div class="logo-container">
+                <h1 class="logo glitch" data-text="ZeroID.IA">ZeroID.IA</h1>
             </div>
-            <div class="buttons-container">
-                <button id="btn-criar-conta" class="btn btn-outline">CRIAR CONTA</button>
-                <button id="btn-login" class="btn btn-filled">FAZER LOGIN</button>
+        </header>
+        
+        <main class="main-content">
+            <div class="hero-section">
+                <div class="typing-container">
+                    <h2 class="typing-text" id="typing-text"></h2>
+                </div>
+                
+                <div class="buttons-container">
+                    <button id="btn-criar-conta" class="btn btn-outline pulse">
+                        <span>Criar Conta</span>
+                    </button>
+                    <button id="btn-login" class="btn btn-filled">
+                        <span>Fazer Login</span>
+                    </button>
+                </div>
             </div>
         </main>
+        
         <footer class="footer">
-            <a href="termos.html">Termos de Uso</a>
-            <a href="privacidade.html">Política de Privacidade</a>
+            <div class="footer-links">
+                <a href="termos.html" class="footer-link">Termos de Uso</a>
+                <a href="privacidade.html" class="footer-link">Política de Privacidade</a>
+            </div>
         </footer>
     </div>
 
-    <!-- Modal para Criar Conta/Login -->
+    <!-- Modal de Autenticação -->
     <div id="auth-modal" class="modal">
         <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <h2 id="modal-title">Criar Conta</h2>
-            <form id="auth-form">
+            <div class="modal-header">
+                <h3 id="modal-title">Criar Conta</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            
+            <form id="auth-form" class="auth-form">
                 <div class="form-group">
-                    <input type="email" id="email" placeholder=" " required>
-                    <label for="email">E-mail</label>
+                    <input type="email" id="email" class="form-input" placeholder=" " required>
+                    <label for="email" class="form-label">E-mail</label>
                 </div>
+                
                 <div class="form-group">
-                    <input type="password" id="password" placeholder=" " required>
-                    <label for="password">Senha</label>
+                    <input type="password" id="password" class="form-input" placeholder=" " required>
+                    <label for="password" class="form-label">Senha</label>
                 </div>
+                
                 <div id="password-strength" class="password-strength">
-                    <div class="strength-bar"></div>
+                    <div class="strength-bar">
+                        <div class="strength-fill"></div>
+                    </div>
+                    <div class="strength-text"></div>
                 </div>
+                
                 <div id="form-extra" style="display: none;">
                     <div class="form-group">
-                        <input type="text" id="username" placeholder=" ">
-                        <label for="username">Nome de Usuário</label>
+                        <input type="text" id="username" class="form-input" placeholder=" ">
+                        <label for="username" class="form-label">Nome de Usuário</label>
                     </div>
+                    
                     <div class="form-group">
-                        <input type="password" id="confirm-password" placeholder=" ">
-                        <label for="confirm-password">Confirmar Senha</label>
+                        <input type="password" id="confirm-password" class="form-input" placeholder=" ">
+                        <label for="confirm-password" class="form-label">Confirmar Senha</label>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-filled btn-block" id="submit-btn">Continuar</button>
+                
+                <button type="submit" class="btn btn-filled btn-block" id="submit-btn">
+                    <span>Continuar</span>
+                </button>
             </form>
         </div>
     </div>
