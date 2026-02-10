@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZeroID.IA - O que nos torna únicos</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="pagina1">
+    <div class="container">
+        <header class="header">
+            <h1 class="logo">ZeroID.IA</h1>
+            <div class="user-menu">
+                <span id="username-display">Usuário</span>
+                <button id="logout-btn" class="btn btn-outline btn-small">Sair</button>
+            </div>
+        </header>
+        <main class="main-content">
+            <h2 class="page-title">O que torna a ZeroID.IA única?</h2>
+            
+            <div class="cards-container">
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3 class="card-title">Consciência Neural Simulada</h3>
+                    <p class="card-description">Nossa IA utiliza arquitetura de rede neural avançada que simula processos cognitivos, criando respostas contextuais e adaptativas.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-network-wired"></i>
+                    </div>
+                    <h3 class="card-title">Integração Multi-IA</h3>
+                    <p class="card-description">Conectamos múltiplos endpoints de IA (GPT, Claude, Gemini) para processar e sintetizar respostas de diferentes perspectivas.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3 class="card-title">Pensamento Processual</h3>
+                    <p class="card-description">Análise em tempo real com exibição do processo de raciocínio antes da resposta final.</p>
+                </div>
+            </div>
+            
+            <div class="continue-container">
+                <button id="continue-btn" class="btn btn-filled btn-large">CONTINUAR</button>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mostrar nome do usuário
+            const user = JSON.parse(sessionStorage.getItem('zeroid_user'));
+            if (user) {
+                document.getElementById('username-display').textContent = user.username;
+            } else {
+                // Se não houver usuário, redirecionar para index
+                window.location.href = 'index.html';
+            }
+            
+            // Botão de logout
+            document.getElementById('logout-btn').addEventListener('click', function() {
+                sessionStorage.removeItem('zeroid_user');
+                window.location.href = 'index.html';
+            });
+            
+            // Botão continuar
+            document.getElementById('continue-btn').addEventListener('click', function() {
+                window.location.href = 'pagina2.html';
+            });
+            
+            // Animar cards
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.3}s`;
+                card.classList.add('fade-in-up');
+            });
+        });
+    </script>
+</body>
+</html>
