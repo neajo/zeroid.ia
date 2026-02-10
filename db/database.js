@@ -1,242 +1,320 @@
-// database.js - Simulação de banco de dados com LocalStorage/IndexedDB
+// database.js - Simulação de banco de dados com LocalStorage
 
-// Usar LocalStorage para simular um banco de dados simples
-
-const DB = {
-    // Usuários ZeroID
-    users: [],
+class Database {
+    constructor() {
+        this.init();
+    }
     
-    // Conversas do chat
-    conversations: [],
-    
-    // Posts do Vibezz
-    vibezzPosts: [],
-    
-    // Seguidores do Vibezz
-    vibezzFollows: [],
-    
-    // Mensagens privadas do Vibezz
-    vibezzMessages: [],
-    
-    // Inicializar banco de dados
     init() {
-        this.loadFromLocalStorage();
-    },
+        // Inicializar coleções se não existirem
+        if (!localStorage.getItem('zeroid_users')) {
+            localStorage.setItem('zeroid_users', JSON.stringify([]));
+        }
+        
+        if (!localStorage.getItem('zeroid_conversations')) {
+            localStorage.setItem('zeroid_conversations', JSON.stringify([]));
+        }
+        
+        if (!localStorage.getItem('zeroid_vibezz_posts')) {
+            localStorage.setItem('zeroid_vibezz_posts', JSON.stringify([]));
+        }
+        
+        if (!localStorage.getItem('zeroid_vibezz_follows')) {
+            localStorage.setItem('zeroid_vibezz_follows', JSON.stringify([]));
+        }
+        
+        if (!localStorage.getItem('zeroid_vibezz_messages')) {
+            localStorage.setItem('zeroid_vibezz_messages', JSON.stringify([]));
+        }
+    }
     
-    // Carregar dados do LocalStorage
-    loadFromLocalStorage() {
-        this.users = JSON.parse(localStorage.getItem('zeroid_db_users')) || [];
-        this.conversations = JSON.parse(localStorage.getItem('zeroid_db_conversations')) || [];
-        this.vibezzPosts = JSON.parse(localStorage.getItem('zeroid_db_vibezzPosts')) || [];
-        this.vibezzFollows = JSON.parse(localStorage.getItem('zeroid_db_vibezzFollows')) || [];
-        this.vibezzMessages = JSON.parse(localStorage.getItem('zeroid_db_vibezzMessages')) || [];
-    },
-    
-    // Salvar dados no LocalStorage
-    saveToLocalStorage() {
-        localStorage.setItem('zeroid_db_users', JSON.stringify(this.users));
-        localStorage.setItem('zeroid_db_conversations', JSON.stringify(this.conversations));
-        localStorage.setItem('zeroid_db_vibezzPosts', JSON.stringify(this.vibezzPosts));
-        localStorage.setItem('zeroid_db_vibezzFollows', JSON.stringify(this.vibezzFollows));
-        localStorage.setItem('zeroid_db_vibezzMessages', JSON.stringify(this.vibezzMessages));
-    },
-    
-    // Funções para usuários ZeroID
+    // Usuários
     createUser(userData) {
-        const user = {
-            id: Date.now(),
+        const users = this.getUsers();
+        const newUser = {
+            id: this.generateId(),
             ...userData,
-            createdAt: new Date().toISOString()
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
         };
         
-        this.users.push(user);
-        this.saveToLocalStorage();
-        return user;
-    },
+        users.push(newUser);
+        localStorage.setItem('zeroid_users', JSON.stringify(users));
+        return newUser;
+    }
     
-    findUserByEmail(email) {
-        return this.users.find(user => user.email === email);
-    },
+    getUsers() {
+        return JSON.parse(localStorage.getItem('zeroid_users')) || [];
+    }
     
-    findUserById(id) {
-        return this.users.find(user => user.id === id);
-    },
+    getUserById(id) {
+        const users = this.getUsers();
+        return users.find(user => user.id === id);
+    }
     
-    // Funções para conversas
+    getUserByEmail(email) {
+        const users = this.getUsers();
+        return users.find(user => user.email === email);
+    }
+    
+    updateUser(id, updates) {
+        const users = this.getUsers();
+        const index = users.findIndex(user => user.id === id);
+        
+        if (index !== -1) {
+            users[index] = {
+                ...users[index],
+                ...updates,
+                updatedAt: new Date().toISOString()
+            };
+            localStorage.setItem('zeroid_users', JSON.stringify(users));
+            return users[index];
+        }
+        
+        return null;
+    }
+    
+    // Conversações (Chat)
     createConversation(conversationData) {
-        const conversation = {
-            id: Date.now(),
+        const conversations = this.getConversations();
+        const newConversation = {
+            id: this.generateId(),
             ...conversationData,
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString()
         };
         
-        this.conversations.push(conversation);
-        this.saveToLocalStorage();
-        return conversation;
-    },
+        conversations.push(newConversation);
+        localStorage.setItem('zeroid_conversations', JSON.stringify(conversations));
+        return newConversation;
+    }
     
-    getConversationsByUserId(userId) {
-        return this.conversations
-            .filter(conv => conv.userId === userId)
-            .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
-    },
+    getConversations(userId = null) {
+        const conversations = JSON.parse(localStorage.getItem('zeroid_conversations')) || [];
+        
+        if (userId) {
+            return conversations.filter(conv => conv.userId === userId);
+        }
+        
+        return conversations;
+    }
     
     getConversationById(id) {
-        return this.conversations.find(conv => conv.id === id);
-    },
+        const conversations = this.getConversations();
+        return conversations.find(conv => conv.id === id);
+    }
     
     updateConversation(id, updates) {
-        const index = this.conversations.findIndex(conv => conv.id === id);
-        if (index >= 0) {
-            this.conversations[index] = {
-                ...this.conversations[index],
+        const conversations = this.getConversations();
+        const index = conversations.findIndex(conv => conv.id === id);
+        
+        if (index !== -1) {
+            conversations[index] = {
+                ...conversations[index],
                 ...updates,
                 updatedAt: new Date().toISOString()
             };
-            this.saveToLocalStorage();
-            return this.conversations[index];
+            localStorage.setItem('zeroid_conversations', JSON.stringify(conversations));
+            return conversations[index];
         }
+        
         return null;
-    },
+    }
     
     deleteConversation(id) {
-        const index = this.conversations.findIndex(conv => conv.id === id);
-        if (index >= 0) {
-            this.conversations.splice(index, 1);
-            this.saveToLocalStorage();
-            return true;
-        }
-        return false;
-    },
+        const conversations = this.getConversations();
+        const filtered = conversations.filter(conv => conv.id !== id);
+        localStorage.setItem('zeroid_conversations', JSON.stringify(filtered));
+        return true;
+    }
     
-    // Funções para Vibezz
-    createVibezzPost(postData) {
-        const post = {
-            id: Date.now(),
+    // Posts Vibezz
+    createPost(postData) {
+        const posts = this.getPosts();
+        const newPost = {
+            id: this.generateId(),
             likes: [],
             comments: [],
+            shares: 0,
             ...postData,
             createdAt: new Date().toISOString()
         };
         
-        this.vibezzPosts.push(post);
-        this.saveToLocalStorage();
-        return post;
-    },
+        posts.unshift(newPost); // Adicionar no início para feed mais recente primeiro
+        localStorage.setItem('zeroid_vibezz_posts', JSON.stringify(posts));
+        return newPost;
+    }
     
-    getVibezzPosts(userId = null) {
-        let posts = [...this.vibezzPosts];
+    getPosts(userId = null) {
+        const posts = JSON.parse(localStorage.getItem('zeroid_vibezz_posts')) || [];
         
         if (userId) {
-            // Filtrar por usuário específico
-            posts = posts.filter(post => post.userId === userId);
+            return posts.filter(post => post.userId === userId);
         }
         
-        // Ordenar por data (mais recente primeiro)
-        return posts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-    },
+        return posts;
+    }
     
-    likeVibezzPost(postId, userId) {
-        const post = this.vibezzPosts.find(p => p.id === postId);
-        if (!post) return false;
+    getPostById(id) {
+        const posts = this.getPosts();
+        return posts.find(post => post.id === id);
+    }
+    
+    likePost(postId, userId) {
+        const posts = this.getPosts();
+        const postIndex = posts.findIndex(post => post.id === postId);
         
-        const likeIndex = post.likes.indexOf(userId);
-        if (likeIndex >= 0) {
-            // Já curtiu, remover like
-            post.likes.splice(likeIndex, 1);
-        } else {
-            // Adicionar like
-            post.likes.push(userId);
+        if (postIndex !== -1) {
+            const post = posts[postIndex];
+            const likeIndex = post.likes.indexOf(userId);
+            
+            if (likeIndex === -1) {
+                // Adicionar like
+                post.likes.push(userId);
+            } else {
+                // Remover like
+                post.likes.splice(likeIndex, 1);
+            }
+            
+            localStorage.setItem('zeroid_vibezz_posts', JSON.stringify(posts));
+            return post.likes;
         }
         
-        this.saveToLocalStorage();
-        return post.likes;
-    },
+        return null;
+    }
     
-    addCommentToPost(postId, commentData) {
-        const post = this.vibezzPosts.find(p => p.id === postId);
-        if (!post) return null;
+    addComment(postId, commentData) {
+        const posts = this.getPosts();
+        const postIndex = posts.findIndex(post => post.id === postId);
         
-        const comment = {
-            id: Date.now(),
-            ...commentData,
-            createdAt: new Date().toISOString()
-        };
+        if (postIndex !== -1) {
+            const comment = {
+                id: this.generateId(),
+                ...commentData,
+                createdAt: new Date().toISOString()
+            };
+            
+            posts[postIndex].comments.push(comment);
+            localStorage.setItem('zeroid_vibezz_posts', JSON.stringify(posts));
+            return comment;
+        }
         
-        post.comments.push(comment);
-        this.saveToLocalStorage();
-        return comment;
-    },
+        return null;
+    }
     
+    // Seguidores
     followUser(followerId, followingId) {
+        const follows = this.getFollows();
+        
         // Verificar se já segue
-        const existingFollow = this.vibezzFollows.find(
+        const existingFollow = follows.find(
             follow => follow.followerId === followerId && follow.followingId === followingId
         );
         
         if (existingFollow) {
-            // Já segue, então parar de seguir (remover)
-            const index = this.vibezzFollows.indexOf(existingFollow);
-            this.vibezzFollows.splice(index, 1);
-            this.saveToLocalStorage();
-            return false; // Indica que deixou de seguir
+            // Deixar de seguir
+            const filtered = follows.filter(
+                follow => !(follow.followerId === followerId && follow.followingId === followingId)
+            );
+            localStorage.setItem('zeroid_vibezz_follows', JSON.stringify(filtered));
+            return false;
         } else {
             // Seguir
-            const follow = {
+            const newFollow = {
+                id: this.generateId(),
                 followerId,
                 followingId,
                 createdAt: new Date().toISOString()
             };
             
-            this.vibezzFollows.push(follow);
-            this.saveToLocalStorage();
-            return true; // Indica que começou a seguir
+            follows.push(newFollow);
+            localStorage.setItem('zeroid_vibezz_follows', JSON.stringify(follows));
+            return true;
         }
-    },
+    }
+    
+    getFollows() {
+        return JSON.parse(localStorage.getItem('zeroid_vibezz_follows')) || [];
+    }
     
     getFollowers(userId) {
-        return this.vibezzFollows.filter(follow => follow.followingId === userId);
-    },
+        const follows = this.getFollows();
+        return follows.filter(follow => follow.followingId === userId);
+    }
     
     getFollowing(userId) {
-        return this.vibezzFollows.filter(follow => follow.followerId === userId);
-    },
+        const follows = this.getFollows();
+        return follows.filter(follow => follow.followerId === userId);
+    }
     
-    // Funções para mensagens privadas do Vibezz
-    createVibezzMessage(messageData) {
-        const message = {
-            id: Date.now(),
-            readAt: null,
+    // Mensagens privadas
+    createMessage(messageData) {
+        const messages = this.getMessages();
+        const newMessage = {
+            id: this.generateId(),
+            read: false,
             ...messageData,
             createdAt: new Date().toISOString()
         };
         
-        this.vibezzMessages.push(message);
-        this.saveToLocalStorage();
-        return message;
-    },
+        messages.push(newMessage);
+        localStorage.setItem('zeroid_vibezz_messages', JSON.stringify(messages));
+        return newMessage;
+    }
     
-    getConversationBetweenUsers(userId1, userId2) {
-        return this.vibezzMessages.filter(msg => 
-            (msg.senderId === userId1 && msg.receiverId === userId2) ||
-            (msg.senderId === userId2 && msg.receiverId === userId1)
-        ).sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-    },
+    getMessages(userId1, userId2 = null) {
+        const messages = JSON.parse(localStorage.getItem('zeroid_vibezz_messages')) || [];
+        
+        if (userId1 && userId2) {
+            return messages.filter(
+                msg => (msg.senderId === userId1 && msg.receiverId === userId2) ||
+                       (msg.senderId === userId2 && msg.receiverId === userId1)
+            ).sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+        }
+        
+        return messages;
+    }
     
     markMessageAsRead(messageId) {
-        const message = this.vibezzMessages.find(msg => msg.id === messageId);
-        if (message && !message.readAt) {
-            message.readAt = new Date().toISOString();
-            this.saveToLocalStorage();
+        const messages = this.getMessages();
+        const messageIndex = messages.findIndex(msg => msg.id === messageId);
+        
+        if (messageIndex !== -1) {
+            messages[messageIndex].read = true;
+            localStorage.setItem('zeroid_vibezz_messages', JSON.stringify(messages));
             return true;
         }
+        
         return false;
     }
-};
+    
+    // Utilitários
+    generateId() {
+        return Date.now().toString(36) + Math.random().toString(36).substr(2);
+    }
+    
+    // Busca
+    searchUsers(query) {
+        const users = this.getUsers();
+        const lowerQuery = query.toLowerCase();
+        
+        return users.filter(user => 
+            user.username.toLowerCase().includes(lowerQuery) ||
+            user.email.toLowerCase().includes(lowerQuery)
+        );
+    }
+    
+    searchPosts(query) {
+        const posts = this.getPosts();
+        const lowerQuery = query.toLowerCase();
+        
+        return posts.filter(post => 
+            post.content.toLowerCase().includes(lowerQuery) ||
+            post.hashtags?.some(tag => tag.toLowerCase().includes(lowerQuery))
+        );
+    }
+}
 
-// Inicializar o banco de dados
-DB.init();
-
-// Exportar para uso em outros arquivos
-window.DB = DB;
+// Criar instância global do banco de dados
+const db = new Database();
+window.db = db;
