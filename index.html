@@ -4,15 +4,521 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZeroID.IA - Consciência Neural Simulada</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=Poppins:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=Poppins:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <style>
+        /* Reset e variáveis CSS */
+        :root {
+            --black: #000000;
+            --white: #ffffff;
+            --gray-100: #f5f5f5;
+            --gray-200: #e0e0e0;
+            --gray-300: #c0c0c0;
+            --gray-400: #9e9e9e;
+            --gray-500: #757575;
+            --gray-600: #616161;
+            --gray-700: #424242;
+            --gray-800: #212121;
+            --gray-900: #111111;
+            --neon-glow: 0 0 10px rgba(255, 255, 255, 0.8),
+                         0 0 20px rgba(255, 255, 255, 0.6),
+                         0 0 30px rgba(255, 255, 255, 0.4);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            background-color: var(--black);
+            color: var(--white);
+            font-family: 'Inter', 'Poppins', sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        /* Fontes */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+        }
+        
+        .code-font {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        /* Animações */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        @keyframes glowPulse {
+            0%, 100% { box-shadow: var(--neon-glow); }
+            50% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.6); }
+        }
+        
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        
+        @keyframes blink {
+            0%, 100% { border-color: transparent; }
+            50% { border-color: var(--white); }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+        
+        /* Partículas */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        /* Layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .header {
+            padding: 30px 0;
+            display: flex;
+            justify-content: center;
+            animation: fadeIn 1.5s ease;
+        }
+        
+        .logo-container {
+            text-align: center;
+        }
+        
+        .logo {
+            font-size: 4rem;
+            font-weight: 700;
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+        
+        .logo::before, .logo::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .logo::before {
+            left: 2px;
+            text-shadow: -2px 0 #ff00ff;
+            animation: glitch 0.3s infinite;
+            animation-delay: 2s;
+            clip: rect(24px, 550px, 90px, 0);
+        }
+        
+        .logo::after {
+            left: -2px;
+            text-shadow: -2px 0 #00ffff;
+            animation: glitch 0.3s infinite;
+            animation-delay: 3s;
+            clip: rect(85px, 550px, 140px, 0);
+        }
+        
+        /* Conteúdo principal */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 0;
+        }
+        
+        .hero-section {
+            text-align: center;
+            max-width: 800px;
+            animation: fadeIn 1s ease;
+        }
+        
+        .typing-container {
+            margin-bottom: 60px;
+            min-height: 100px;
+        }
+        
+        .typing-text {
+            font-size: 2.5rem;
+            font-weight: 300;
+            border-right: 3px solid var(--white);
+            white-space: nowrap;
+            overflow: hidden;
+            display: inline-block;
+            animation: typing 3.5s steps(40, end), blink 0.75s step-end infinite;
+        }
+        
+        .buttons-container {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            margin-top: 40px;
+        }
+        
+        /* Botões */
+        .btn {
+            padding: 18px 45px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            outline: none;
+            border-radius: 4px;
+            min-width: 200px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: var(--white);
+            border: 2px solid var(--white);
+        }
+        
+        .btn-outline:hover {
+            background: var(--white);
+            color: var(--black);
+            animation: glowPulse 2s infinite;
+            transform: translateY(-3px);
+        }
+        
+        .btn-filled {
+            background: var(--white);
+            color: var(--black);
+            border: 2px solid var(--white);
+        }
+        
+        .btn-filled:hover {
+            background: transparent;
+            color: var(--white);
+            animation: glowPulse 2s infinite;
+            transform: translateY(-3px);
+        }
+        
+        .pulse {
+            animation: glowPulse 3s infinite;
+        }
+        
+        /* Efeito ripple */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.7);
+            transform: scale(0);
+            animation: ripple 0.6s linear;
+        }
+        
+        /* Footer */
+        .footer {
+            padding: 30px 0;
+            text-align: center;
+            border-top: 1px solid var(--gray-800);
+            animation: fadeIn 1.5s ease;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+        }
+        
+        .footer-link {
+            color: var(--gray-400);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+        
+        .footer-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--white);
+            transition: width 0.3s ease;
+        }
+        
+        .footer-link:hover {
+            color: var(--white);
+        }
+        
+        .footer-link:hover::after {
+            width: 100%;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .modal-content {
+            background: var(--gray-900);
+            border-radius: 16px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid var(--gray-700);
+            position: relative;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .modal-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 2rem;
+            cursor: pointer;
+            padding: 5px;
+            transition: transform 0.3s ease;
+        }
+        
+        .modal-close:hover {
+            transform: rotate(90deg);
+        }
+        
+        /* Formulário */
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .form-group {
+            position: relative;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 18px;
+            background: var(--gray-800);
+            border: 1px solid var(--gray-700);
+            border-radius: 8px;
+            color: var(--white);
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--white);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+        }
+        
+        .form-label {
+            position: absolute;
+            top: 18px;
+            left: 18px;
+            color: var(--gray-400);
+            transition: all 0.3s ease;
+            pointer-events: none;
+            background: var(--gray-900);
+            padding: 0 8px;
+        }
+        
+        .form-input:focus + .form-label,
+        .form-input:not(:placeholder-shown) + .form-label {
+            top: -12px;
+            left: 12px;
+            font-size: 0.85rem;
+            color: var(--white);
+        }
+        
+        .password-strength {
+            margin-top: 10px;
+        }
+        
+        .strength-bar {
+            height: 6px;
+            background: var(--gray-800);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 5px;
+        }
+        
+        .strength-fill {
+            height: 100%;
+            width: 0%;
+            transition: all 0.3s ease;
+            border-radius: 3px;
+        }
+        
+        .strength-text {
+            font-size: 0.9rem;
+            color: var(--gray-400);
+            transition: color 0.3s ease;
+        }
+        
+        .btn-block {
+            width: 100%;
+            padding: 16px;
+            font-size: 1.1rem;
+            margin-top: 10px;
+        }
+        
+        /* Mensagens de erro/sucesso */
+        .auth-error {
+            background: rgba(255, 68, 68, 0.1);
+            border: 1px solid rgba(255, 68, 68, 0.3);
+            color: #ff4444;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .auth-success {
+            background: rgba(0, 200, 81, 0.1);
+            border: 1px solid rgba(0, 200, 81, 0.3);
+            color: #00C851;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 3rem;
+            }
+            
+            .typing-text {
+                font-size: 1.8rem;
+            }
+            
+            .buttons-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+            }
+            
+            .btn {
+                min-width: 250px;
+                padding: 16px 30px;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .modal-content {
+                padding: 30px 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 2.5rem;
+            }
+            
+            .typing-text {
+                font-size: 1.5rem;
+            }
+            
+            .btn {
+                min-width: 200px;
+                padding: 14px 25px;
+                font-size: 1rem;
+            }
+        }
+        
+        /* Animação de entrada */
+        .fade-in {
+            animation: fadeIn 1s ease forwards;
+        }
+    </style>
 </head>
 <body class="index-page">
     <!-- Partículas de fundo -->
-    <div id="particles-js" class="particles-container"></div>
+    <div id="particles-js"></div>
     
     <!-- Conteúdo principal -->
     <div class="container">
@@ -56,6 +562,8 @@
             </div>
             
             <form id="auth-form" class="auth-form">
+                <div id="auth-message"></div>
+                
                 <div class="form-group">
                     <input type="email" id="email" class="form-input" placeholder=" " required>
                     <label for="email" class="form-label">E-mail</label>
@@ -68,9 +576,9 @@
                 
                 <div id="password-strength" class="password-strength">
                     <div class="strength-bar">
-                        <div class="strength-fill"></div>
+                        <div class="strength-fill" id="strength-fill"></div>
                     </div>
-                    <div class="strength-text"></div>
+                    <div class="strength-text" id="strength-text"></div>
                 </div>
                 
                 <div id="form-extra" style="display: none;">
@@ -92,8 +600,519 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/auth.js"></script>
+    <script>
+        // Inicialização da página
+        document.addEventListener('DOMContentLoaded', function() {
+            initParticles();
+            initTypingEffect();
+            initAuthButtons();
+            initUIEffects();
+            
+            // Inicializar banco de dados
+            initDatabase();
+        });
+        
+        // Banco de dados LocalStorage
+        function initDatabase() {
+            if (!localStorage.getItem('zeroid_users')) {
+                localStorage.setItem('zeroid_users', JSON.stringify([]));
+            }
+            if (!localStorage.getItem('zeroid_conversations')) {
+                localStorage.setItem('zeroid_conversations', JSON.stringify([]));
+            }
+        }
+        
+        // Partículas de fundo
+        function initParticles() {
+            if (typeof particlesJS !== 'undefined') {
+                particlesJS('particles-js', {
+                    particles: {
+                        number: {
+                            value: 80,
+                            density: {
+                                enable: true,
+                                value_area: 800
+                            }
+                        },
+                        color: {
+                            value: "#ffffff"
+                        },
+                        shape: {
+                            type: "circle"
+                        },
+                        opacity: {
+                            value: 0.5,
+                            random: true
+                        },
+                        size: {
+                            value: 3,
+                            random: true
+                        },
+                        line_linked: {
+                            enable: true,
+                            distance: 150,
+                            color: "#ffffff",
+                            opacity: 0.2,
+                            width: 1
+                        },
+                        move: {
+                            enable: true,
+                            speed: 2,
+                            direction: "none",
+                            random: true,
+                            straight: false,
+                            out_mode: "out",
+                            bounce: false
+                        }
+                    },
+                    interactivity: {
+                        detect_on: "canvas",
+                        events: {
+                            onhover: {
+                                enable: true,
+                                mode: "repulse"
+                            },
+                            onclick: {
+                                enable: true,
+                                mode: "push"
+                            }
+                        }
+                    },
+                    retina_detect: true
+                });
+            }
+        }
+        
+        // Efeito de digitação
+        function initTypingEffect() {
+            const typingElement = document.getElementById('typing-text');
+            if (!typingElement) return;
+            
+            const texts = [
+                "Consciência Neural Simulada",
+                "Inteligência Artificial Avançada",
+                "Rede Neural Integrada"
+            ];
+            
+            let textIndex = 0;
+            let charIndex = 0;
+            let isDeleting = false;
+            
+            function type() {
+                const currentText = texts[textIndex];
+                
+                if (isDeleting) {
+                    // Deletando texto
+                    typingElement.textContent = currentText.substring(0, charIndex - 1);
+                    charIndex--;
+                    
+                    if (charIndex === 0) {
+                        isDeleting = false;
+                        textIndex = (textIndex + 1) % texts.length;
+                        setTimeout(type, 500);
+                    } else {
+                        setTimeout(type, 50);
+                    }
+                } else {
+                    // Digitando texto
+                    typingElement.textContent = currentText.substring(0, charIndex + 1);
+                    charIndex++;
+                    
+                    if (charIndex === currentText.length) {
+                        isDeleting = true;
+                        setTimeout(type, 2000);
+                    } else {
+                        setTimeout(type, 100);
+                    }
+                }
+            }
+            
+            // Iniciar após 1 segundo
+            setTimeout(type, 1000);
+        }
+        
+        // Configurar botões de autenticação
+        function initAuthButtons() {
+            const btnCriarConta = document.getElementById('btn-criar-conta');
+            const btnLogin = document.getElementById('btn-login');
+            const modal = document.getElementById('auth-modal');
+            const closeModal = document.querySelector('.modal-close');
+            const authForm = document.getElementById('auth-form');
+            
+            if (btnCriarConta) {
+                btnCriarConta.addEventListener('click', () => {
+                    openAuthModal('signup');
+                });
+            }
+            
+            if (btnLogin) {
+                btnLogin.addEventListener('click', () => {
+                    openAuthModal('login');
+                });
+            }
+            
+            if (closeModal) {
+                closeModal.addEventListener('click', () => {
+                    closeAuthModal();
+                });
+            }
+            
+            // Fechar modal ao clicar fora
+            if (modal) {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        closeAuthModal();
+                    }
+                });
+            }
+            
+            // Submissão do formulário
+            if (authForm) {
+                authForm.addEventListener('submit', handleAuthSubmit);
+            }
+            
+            // Validação de força da senha
+            const passwordInput = document.getElementById('password');
+            if (passwordInput) {
+                passwordInput.addEventListener('input', updatePasswordStrength);
+            }
+        }
+        
+        function openAuthModal(mode) {
+            const modal = document.getElementById('auth-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const formExtra = document.getElementById('form-extra');
+            const submitBtn = document.getElementById('submit-btn');
+            const authMessage = document.getElementById('auth-message');
+            
+            // Limpar mensagens anteriores
+            if (authMessage) {
+                authMessage.innerHTML = '';
+                authMessage.className = '';
+            }
+            
+            if (mode === 'signup') {
+                modalTitle.textContent = 'Criar Conta';
+                formExtra.style.display = 'block';
+                submitBtn.textContent = 'Criar Conta';
+            } else {
+                modalTitle.textContent = 'Fazer Login';
+                formExtra.style.display = 'none';
+                submitBtn.textContent = 'Entrar';
+            }
+            
+            modal.style.display = 'flex';
+        }
+        
+        function closeAuthModal() {
+            const modal = document.getElementById('auth-modal');
+            modal.style.display = 'none';
+            
+            // Resetar formulário
+            const authForm = document.getElementById('auth-form');
+            if (authForm) {
+                authForm.reset();
+                updatePasswordStrength();
+            }
+        }
+        
+        function updatePasswordStrength() {
+            const passwordInput = document.getElementById('password');
+            const strengthFill = document.getElementById('strength-fill');
+            const strengthText = document.getElementById('strength-text');
+            
+            if (!passwordInput || !strengthFill || !strengthText) return;
+            
+            const password = passwordInput.value;
+            
+            if (!password) {
+                strengthFill.style.width = '0%';
+                strengthText.textContent = '';
+                return;
+            }
+            
+            let score = 0;
+            if (password.length >= 8) score++;
+            if (password.length >= 12) score++;
+            if (/[a-z]/.test(password)) score++;
+            if (/[A-Z]/.test(password)) score++;
+            if (/[0-9]/.test(password)) score++;
+            if (/[^A-Za-z0-9]/.test(password)) score++;
+            
+            const percentage = (score / 6) * 100;
+            
+            let color, text;
+            if (score <= 2) {
+                color = '#ff4444';
+                text = 'Fraca';
+            } else if (score <= 4) {
+                color = '#ffbb33';
+                text = 'Média';
+            } else {
+                color = '#00C851';
+                text = 'Forte';
+            }
+            
+            strengthFill.style.width = percentage + '%';
+            strengthFill.style.backgroundColor = color;
+            strengthText.textContent = 'Força da senha: ' + text;
+            strengthText.style.color = color;
+        }
+        
+        function handleAuthSubmit(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const isSignup = document.getElementById('form-extra').style.display !== 'none';
+            
+            if (isSignup) {
+                const username = document.getElementById('username').value.trim();
+                const confirmPassword = document.getElementById('confirm-password').value.trim();
+                
+                if (!validateSignup(email, password, username, confirmPassword)) {
+                    return;
+                }
+                
+                createAccount(email, password, username);
+            } else {
+                if (!validateLogin(email, password)) {
+                    return;
+                }
+                
+                login(email, password);
+            }
+        }
+        
+        function validateSignup(email, password, username, confirmPassword) {
+            // Validar email
+            if (!isValidEmail(email)) {
+                showAuthError('Por favor, insira um e-mail válido.');
+                return false;
+            }
+            
+            // Validar nome de usuário
+            if (username.length < 3) {
+                showAuthError('O nome de usuário deve ter pelo menos 3 caracteres.');
+                return false;
+            }
+            
+            // Validar senha
+            const strength = calculatePasswordStrength(password);
+            if (strength.score < 3) {
+                showAuthError('A senha é muito fraca. Use letras maiúsculas, minúsculas, números e símbolos.');
+                return false;
+            }
+            
+            // Confirmar senha
+            if (password !== confirmPassword) {
+                showAuthError('As senhas não coincidem.');
+                return false;
+            }
+            
+            return true;
+        }
+        
+        function validateLogin(email, password) {
+            if (!isValidEmail(email)) {
+                showAuthError('Por favor, insira um e-mail válido.');
+                return false;
+            }
+            
+            if (password.length < 6) {
+                showAuthError('A senha deve ter pelo menos 6 caracteres.');
+                return false;
+            }
+            
+            return true;
+        }
+        
+        function calculatePasswordStrength(password) {
+            let score = 0;
+            
+            // Comprimento
+            if (password.length >= 8) score++;
+            if (password.length >= 12) score++;
+            
+            // Letras minúsculas
+            if (/[a-z]/.test(password)) score++;
+            
+            // Letras maiúsculas
+            if (/[A-Z]/.test(password)) score++;
+            
+            // Números
+            if (/[0-9]/.test(password)) score++;
+            
+            // Símbolos
+            if (/[^A-Za-z0-9]/.test(password)) score++;
+            
+            return { score, percentage: (score / 6) * 100 };
+        }
+        
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+        
+        function createAccount(email, password, username) {
+            // Verificar se usuário já existe
+            const users = JSON.parse(localStorage.getItem('zeroid_users') || '[]');
+            const existingUser = users.find(user => user.email === email);
+            
+            if (existingUser) {
+                showAuthError('Este e-mail já está registrado.');
+                return;
+            }
+            
+            // Criar novo usuário
+            const newUser = {
+                id: Date.now(),
+                email: email,
+                username: username,
+                password: password,
+                createdAt: new Date().toISOString()
+            };
+            
+            users.push(newUser);
+            localStorage.setItem('zeroid_users', JSON.stringify(users));
+            
+            // Salvar sessão
+            const token = 'zeroid_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            localStorage.setItem('zeroid_token', token);
+            localStorage.setItem('zeroid_user', JSON.stringify(newUser));
+            
+            showAuthSuccess('Conta criada com sucesso!');
+            setTimeout(() => {
+                window.location.href = 'pagina1.html';
+            }, 1500);
+        }
+        
+        function login(email, password) {
+            const users = JSON.parse(localStorage.getItem('zeroid_users') || '[]');
+            const user = users.find(user => user.email === email && user.password === password);
+            
+            if (!user) {
+                showAuthError('E-mail ou senha incorretos.');
+                return;
+            }
+            
+            // Salvar sessão
+            const token = 'zeroid_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            localStorage.setItem('zeroid_token', token);
+            localStorage.setItem('zeroid_user', JSON.stringify(user));
+            
+            showAuthSuccess('Login realizado com sucesso!');
+            setTimeout(() => {
+                window.location.href = 'pagina1.html';
+            }, 1500);
+        }
+        
+        function showAuthError(message) {
+            showAuthMessage(message, 'error');
+        }
+        
+        function showAuthSuccess(message) {
+            showAuthMessage(message, 'success');
+        }
+        
+        function showAuthMessage(message, type) {
+            const authMessage = document.getElementById('auth-message');
+            if (!authMessage) return;
+            
+            authMessage.innerHTML = message;
+            authMessage.className = type === 'error' ? 'auth-error' : 'auth-success';
+        }
+        
+        // Efeitos de interface
+        function initUIEffects() {
+            // Efeito ripple nos botões
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const ripple = document.createElement('span');
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+                    
+                    ripple.style.width = ripple.style.height = size + 'px';
+                    ripple.style.left = x + 'px';
+                    ripple.style.top = y + 'px';
+                    ripple.classList.add('ripple');
+                    
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            });
+            
+            // Efeito glitch no logo
+            const glitchElements = document.querySelectorAll('.glitch');
+            glitchElements.forEach(element => {
+                setInterval(() => {
+                    if (Math.random() > 0.7) {
+                        element.classList.add('glitching');
+                        setTimeout(() => {
+                            element.classList.remove('glitching');
+                        }, 300);
+                    }
+                }, 3000);
+            });
+            
+            // Labels flutuantes nos inputs
+            const inputs = document.querySelectorAll('.form-input');
+            inputs.forEach(input => {
+                input.addEventListener('focus', () => {
+                    const label = input.nextElementSibling;
+                    if (label && label.classList.contains('form-label')) {
+                        label.style.top = '-12px';
+                        label.style.left = '12px';
+                        label.style.fontSize = '0.85rem';
+                        label.style.color = 'var(--white)';
+                    }
+                });
+                
+                input.addEventListener('blur', () => {
+                    if (!input.value) {
+                        const label = input.nextElementSibling;
+                        if (label && label.classList.contains('form-label')) {
+                            label.style.top = '18px';
+                            label.style.left = '18px';
+                            label.style.fontSize = '1rem';
+                            label.style.color = 'var(--gray-400)';
+                        }
+                    }
+                });
+            });
+        }
+        
+        // Funções globais
+        function navigateTo(page) {
+            window.location.href = page;
+        }
+        
+        function checkAuth() {
+            return localStorage.getItem('zeroid_token') !== null;
+        }
+        
+        function getCurrentUser() {
+            const user = localStorage.getItem('zeroid_user');
+            return user ? JSON.parse(user) : null;
+        }
+        
+        function logout() {
+            localStorage.removeItem('zeroid_token');
+            localStorage.removeItem('zeroid_user');
+            navigateTo('index.html');
+        }
+        
+        // Exportar para uso global
+        window.navigateTo = navigateTo;
+        window.checkAuth = checkAuth;
+        window.getCurrentUser = getCurrentUser;
+        window.logout = logout;
+    </script>
 </body>
 </html>
