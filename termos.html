@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZeroID.IA - Termos de Uso</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Estilos específicos para termos/privacidade */
+        .legal-page .header {
+            justify-content: flex-start;
+            padding: 20px 0;
+        }
+        
+        .legal-page .logo {
+            font-size: 2rem;
+            margin-right: 40px;
+            cursor: pointer;
+        }
+        
+        .legal-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 0;
+        }
+        
+        .legal-title {
+            font-size: 3rem;
+            margin-bottom: 40px;
+            animation: slideFromTop 1s ease;
+        }
+        
+        @keyframes slideFromTop {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .legal-section {
+            margin-bottom: 50px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards;
+        }
+        
+        .legal-section:nth-child(1) { animation-delay: 0.2s; }
+        .legal-section:nth-child(2) { animation-delay: 0.4s; }
+        .legal-section:nth-child(3) { animation-delay: 0.6s; }
+        .legal-section:nth-child(4) { animation-delay: 0.8s; }
+        .legal-section:nth-child(5) { animation-delay: 1s; }
+        
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--white);
+            border-bottom: 2px solid var(--gray-700);
+            padding-bottom: 10px;
+        }
+        
+        .legal-text {
+            color: var(--gray-300);
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+        
+        .back-button {
+            display: inline-block;
+            margin-top: 40px;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+        }
+        
+        /* Scrollbar customizada */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--gray-900);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--gray-600);
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--gray-500);
+        }
+    </style>
+</head>
+<body class="legal-page">
+    <div class="container">
+        <header class="header">
+            <h1 class="logo" onclick="window.location.href='index.html'">ZeroID.IA</h1>
+        </header>
+        <main class="legal-container">
+            <h2 class="legal-title">Termos de Uso</h2>
+            
+            <div class="legal-section">
+                <h3 class="section-title">1. Aceitação dos Termos</h3>
+                <p class="legal-text">Ao acessar e usar os serviços da ZeroID.IA, você concorda em cumprir e ser vinculado por estes Termos de Uso. Se você não concordar com qualquer parte destes termos, não poderá acessar nossos serviços.</p>
+            </div>
+            
+            <div class="legal-section">
+                <h3 class="section-title">2. Descrição do Serviço</h3>
+                <p class="legal-text">A ZeroID.IA fornece uma plataforma de inteligência artificial que inclui chat interativo, processamento de linguagem natural e uma rede social neural (Vibezz). Nossos serviços estão em constante evolução e podem ser alterados a qualquer momento.</p>
+            </div>
+            
+            <div class="legal-section">
+                <h3 class="section-title">3. Conta do Usuário</h3>
+                <p class="legal-text">Para acessar certos recursos, você precisará criar uma conta. Você é responsável por manter a confidencialidade de sua conta e senha, e por restringir o acesso ao seu dispositivo. Você concorda em aceitar a responsabilidade por todas as atividades que ocorram sob sua conta.</p>
+            </div>
+            
+            <div class="legal-section">
+                <h3 class="section-title">4. Uso Aceitável</h3>
+                <p class="legal-text">Você concorda em não usar nossos serviços para: (a) violar qualquer lei ou regulamento aplicável; (b) infringir direitos de propriedade intelectual; (c) enviar material malicioso ou vírus; (d) coletar informações de outros usuários sem consentimento.</p>
+            </div>
+            
+            <div class="legal-section">
+                <h3 class="section-title">5. Propriedade Intelectual</h3>
+                <p class="legal-text">Todo o conteúdo, funcionalidades e software associados à ZeroID.IA são propriedade da ZeroID.IA ou de seus licenciadores e estão protegidos por leis de direitos autorais e outras leis de propriedade intelectual.</p>
+            </div>
+            
+            <button onclick="window.location.href='index.html'" class="btn btn-outline back-button">VOLTAR AO INÍCIO</button>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animar seções ao carregar
+            const sections = document.querySelectorAll('.legal-section');
+            sections.forEach((section, index) => {
+                section.style.animationDelay = `${index * 0.2}s`;
+            });
+        });
+    </script>
+</body>
+</html>
