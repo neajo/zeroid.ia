@@ -6,288 +6,73 @@
     <title>Vibezz - A Rede Social Neural</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* Estilos específicos para Vibezz */
-        .vibezz-page {
-            background: linear-gradient(135deg, #000000 0%, #0a0a0a 100%);
-            min-height: 100vh;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .vibezz-page::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.05) 0%, transparent 20%),
-                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.05) 0%, transparent 20%);
-            z-index: 0;
-        }
-        
-        .vibezz-container {
-            position: relative;
-            z-index: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 40px 20px;
-        }
-        
-        .vibezz-logo {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 5rem;
-            margin-bottom: 10px;
-            background: linear-gradient(90deg, #ffffff 0%, #aaaaaa 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-fill-color: transparent;
-            animation: vibrate 3s infinite;
-        }
-        
-        @keyframes vibrate {
-            0%, 100% { transform: translateX(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
-            20%, 40%, 60%, 80% { transform: translateX(2px); }
-        }
-        
-        .vibezz-tagline {
-            font-size: 1.5rem;
-            margin-bottom: 60px;
-            text-align: center;
-            color: var(--gray-300);
-        }
-        
-        .vibezz-buttons {
-            display: flex;
-            gap: 30px;
-            margin-bottom: 60px;
-        }
-        
-        .vibezz-btn {
-            padding: 20px 50px;
-            font-size: 1.3rem;
-            font-weight: 600;
-        }
-        
-        .vibezz-form-container {
-            width: 100%;
-            max-width: 500px;
-            overflow: hidden;
-            height: 0;
-            transition: height 0.8s ease;
-        }
-        
-        .vibezz-form-container.expanded {
-            height: 650px;
-        }
-        
-        .vibezz-form {
-            background: var(--gray-900);
-            padding: 40px;
-            border-radius: 10px;
-            border: 1px solid var(--gray-700);
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.5s ease 0.3s;
-        }
-        
-        .vibezz-form-container.expanded .vibezz-form {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        .form-title {
-            font-size: 2rem;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-        
-        .form-group {
-            position: relative;
-            margin-bottom: 30px;
-        }
-        
-        .form-group input {
-            width: 100%;
-            padding: 15px 0;
-            font-size: 16px;
-            color: var(--white);
-            background: transparent;
-            border: none;
-            border-bottom: 1px solid var(--gray-600);
-            outline: none;
-            transition: border-color 0.3s ease;
-        }
-        
-        .form-group input:focus {
-            border-bottom-color: var(--white);
-        }
-        
-        .form-group label {
-            position: absolute;
-            top: 15px;
-            left: 0;
-            font-size: 16px;
-            color: var(--gray-400);
-            pointer-events: none;
-            transition: all 0.3s ease;
-        }
-        
-        .form-group input:focus ~ label,
-        .form-group input:not(:placeholder-shown) ~ label {
-            top: -20px;
-            font-size: 14px;
-            color: var(--white);
-        }
-        
-        .password-strength-container {
-            margin-bottom: 30px;
-        }
-        
-        .strength-text {
-            font-size: 0.9rem;
-            margin-bottom: 5px;
-            color: var(--gray-400);
-        }
-        
-        .strength-bar {
-            height: 8px;
-            background: var(--gray-800);
-            border-radius: 4px;
-            overflow: hidden;
-        }
-        
-        .strength-fill {
-            height: 100%;
-            width: 0;
-            border-radius: 4px;
-            transition: width 0.3s ease, background-color 0.3s ease;
-        }
-        
-        .form-checkbox {
-            display: flex;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-        
-        .form-checkbox input {
-            margin-right: 10px;
-            width: 18px;
-            height: 18px;
-        }
-        
-        .form-checkbox label {
-            font-size: 0.9rem;
-            color: var(--gray-300);
-        }
-        
-        .form-checkbox a {
-            color: var(--white);
-            text-decoration: underline;
-        }
-        
-        .submit-btn {
-            width: 100%;
-            padding: 18px;
-            font-size: 1.2rem;
-            font-weight: 600;
-        }
-        
-        .login-link {
-            text-align: center;
-            margin-top: 20px;
-            color: var(--gray-400);
-        }
-        
-        .login-link a {
-            color: var(--white);
-            text-decoration: underline;
-            cursor: pointer;
-        }
-        
-        @media (max-width: 768px) {
-            .vibezz-logo {
-                font-size: 3.5rem;
-            }
-            
-            .vibezz-tagline {
-                font-size: 1.2rem;
-            }
-            
-            .vibezz-buttons {
-                flex-direction: column;
-                gap: 20px;
-            }
-            
-            .vibezz-btn {
-                padding: 18px 40px;
-                font-size: 1.1rem;
-            }
-            
-            .vibezz-form {
-                padding: 30px 20px;
-            }
-        }
-    </style>
 </head>
 <body class="vibezz-page">
     <div class="vibezz-container">
-        <h1 class="vibezz-logo">Vibezz</h1>
-        <p class="vibezz-tagline">A Rede Social Neural - Onde Mentes se Conectam</p>
-        
-        <div class="vibezz-buttons">
-            <button id="btn-criar-conta-vibezz" class="btn btn-outline vibezz-btn">CRIAR CONTA VIBEZZ</button>
-            <button id="btn-login-vibezz" class="btn btn-filled vibezz-btn">JÁ TENHO CONTA</button>
+        <div class="vibezz-header">
+            <h1 class="vibezz-logo">Vibezz</h1>
+            <p class="vibezz-tagline">A Rede Social Neural - Onde Mentes se Conectam</p>
         </div>
         
-        <!-- Formulário de cadastro -->
-        <div class="vibezz-form-container" id="form-container">
-            <form class="vibezz-form" id="vibezz-form">
-                <h2 class="form-title" id="form-title">Criar Conta Vibezz</h2>
-                
-                <div class="form-group">
-                    <input type="text" id="full-name" placeholder=" " required>
-                    <label for="full-name">Nome completo</label>
+        <div class="vibezz-illustration">
+            <div class="neural-network"></div>
+        </div>
+        
+        <div class="vibezz-buttons">
+            <button id="btn-criar-vibezz" class="btn btn-outline vibezz-btn">
+                CRIAR CONTA VIBEZZ
+            </button>
+            <button id="btn-login-vibezz" class="btn btn-filled vibezz-btn">
+                JÁ TENHO CONTA
+            </button>
+        </div>
+        
+        <!-- Formulário expandido -->
+        <div id="vibezz-form-container" class="vibezz-form-container">
+            <form id="vibezz-form" class="vibezz-form">
+                <div class="form-header">
+                    <h2 id="form-title">Criar Conta Vibezz</h2>
+                    <button type="button" id="close-form" class="btn-close">&times;</button>
                 </div>
                 
-                <div class="form-group">
-                    <input type="text" id="username" placeholder=" " required>
-                    <label for="username">Nome de usuário (@username)</label>
-                </div>
-                
-                <div class="form-group">
-                    <input type="email" id="email-vibezz" placeholder=" " required>
-                    <label for="email-vibezz">E-mail</label>
-                </div>
-                
-                <div class="form-group">
-                    <input type="password" id="password-vibezz" placeholder=" " required>
-                    <label for="password-vibezz">Senha</label>
-                </div>
-                
-                <div class="password-strength-container">
-                    <div class="strength-text">Força da senha: <span id="strength-text">Fraca</span></div>
-                    <div class="strength-bar">
-                        <div class="strength-fill" id="strength-fill"></div>
+                <div class="form-body">
+                    <div class="form-group">
+                        <input type="text" id="full-name" class="form-input" placeholder=" " required>
+                        <label for="full-name" class="form-label">Nome completo</label>
                     </div>
-                </div>
-                
-                <div class="form-checkbox">
-                    <input type="checkbox" id="terms" required>
-                    <label for="terms">Aceito os <a href="#" id="terms-link">termos do Vibezz</a></label>
-                </div>
-                
-                <button type="submit" class="btn btn-filled submit-btn" id="submit-vibezz">CRIAR CONTA</button>
-                
-                <div class="login-link" id="login-link">
-                    Já tem uma conta? <a id="switch-to-login">Faça login</a>
+                    
+                    <div class="form-group">
+                        <input type="text" id="vibezz-username" class="form-input" placeholder=" " required>
+                        <label for="vibezz-username" class="form-label">Nome de usuário (@username)</label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <input type="email" id="vibezz-email" class="form-input" placeholder=" " required>
+                        <label for="vibezz-email" class="form-label">E-mail</label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <input type="password" id="vibezz-password" class="form-input" placeholder=" " required>
+                        <label for="vibezz-password" class="form-label">Senha</label>
+                    </div>
+                    
+                    <div class="password-strength">
+                        <div class="strength-bar">
+                            <div class="strength-fill" id="strength-fill"></div>
+                        </div>
+                        <div class="strength-text" id="strength-text">Força da senha: Fraca</div>
+                    </div>
+                    
+                    <div class="form-check">
+                        <input type="checkbox" id="vibezz-terms" required>
+                        <label for="vibezz-terms">
+                            Aceito os <a href="#" class="terms-link">termos do Vibezz</a>
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-filled btn-block" id="submit-vibezz">
+                        CRIAR CONTA
+                    </button>
                 </div>
             </form>
         </div>
@@ -295,13 +80,209 @@
 
     <script src="js/main.js"></script>
     <script src="db/database.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const formContainer = document.getElementById('form-container');
-            const form = document.getElementById('vibezz-form');
-            const formTitle = document.getElementById('form-title');
-            const fullNameField = document.getElementById('full-name');
-            const usernameField = document.getElementById('username');
-            const emailField = document.getElementById('email-vibezz');
-            const passwordField = document.getElementById('password-vibezz');
-            const strengthText = document.getElementById('strength-text
+    <script src="js/vibezz.js"></script>
+    
+    <style>
+        .vibezz-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, 
+                var(--black) 0%, 
+                var(--gray-900) 50%, 
+                var(--black) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .vibezz-container {
+            text-align: center;
+            max-width: 800px;
+            padding: 40px;
+            z-index: 1;
+            position: relative;
+        }
+        
+        .vibezz-logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 4.5rem;
+            background: linear-gradient(90deg, #fff, #aaa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            animation: vibrate 3s infinite;
+        }
+        
+        @keyframes vibrate {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-1px); }
+            20%, 40%, 60%, 80% { transform: translateX(1px); }
+        }
+        
+        .vibezz-tagline {
+            font-size: 1.3rem;
+            color: var(--gray-300);
+            margin-bottom: 60px;
+        }
+        
+        .vibezz-illustration {
+            width: 100%;
+            height: 300px;
+            margin-bottom: 60px;
+            position: relative;
+        }
+        
+        .neural-network {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+        
+        .neural-network::before,
+        .neural-network::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 30% 30%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 70%, rgba(255,255,255,0.1) 0%, transparent 50%);
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .neural-network::after {
+            animation-delay: 3s;
+        }
+        
+        .vibezz-buttons {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+        
+        .vibezz-btn {
+            padding: 18px 40px;
+            font-size: 1.1rem;
+            min-width: 200px;
+        }
+        
+        .vibezz-form-container {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.8s ease;
+            margin: 0 auto;
+            max-width: 500px;
+        }
+        
+        .vibezz-form-container.expanded {
+            max-height: 800px;
+        }
+        
+        .vibezz-form {
+            background: var(--gray-900);
+            border: 1px solid var(--gray-700);
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 20px;
+            animation: slideUp 0.5s ease;
+        }
+        
+        .form-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .btn-close {
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 1.8rem;
+            cursor: pointer;
+            padding: 5px;
+        }
+        
+        .form-body {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .password-strength {
+            margin: 10px 0;
+        }
+        
+        .strength-bar {
+            height: 6px;
+            background: var(--gray-800);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 5px;
+        }
+        
+        .strength-fill {
+            height: 100%;
+            width: 0;
+            transition: width 0.3s ease, background-color 0.3s ease;
+            border-radius: 3px;
+        }
+        
+        .strength-text {
+            font-size: 0.9rem;
+            color: var(--gray-400);
+        }
+        
+        .form-check {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .form-check input {
+            width: 18px;
+            height: 18px;
+        }
+        
+        .form-check label {
+            font-size: 0.9rem;
+            color: var(--gray-300);
+        }
+        
+        .terms-link {
+            color: var(--white);
+            text-decoration: underline;
+        }
+        
+        .btn-block {
+            width: 100%;
+            padding: 16px;
+            font-size: 1.1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .vibezz-logo {
+                font-size: 3rem;
+            }
+            
+            .vibezz-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .vibezz-btn {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .vibezz-form {
+                padding: 20px;
+            }
+        }
+    </style>
+</body>
+</html>
